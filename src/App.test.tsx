@@ -42,6 +42,34 @@ describe('calculator-style interaction', () => {
     expect(screen.getByLabelText('Calculator display')).toHaveValue('24')
   })
 
+  it('supports repeatable subtraction from the keyboard', async () => {
+    mockedCalculate.mockResolvedValue(4)
+    const user = userEvent.setup()
+    render(<App />)
+
+    await user.type(screen.getByLabelText('Calculator display'), '10-4-2')
+    expect(screen.getByLabelText('Current expression')).toHaveTextContent('10 - 4 - 2')
+    await user.click(screen.getByRole('button', { name: 'Calculate' }))
+
+    expect(mockedCalculate).toHaveBeenCalledWith('subtraction', [10, 4, 2])
+    expect(screen.getByLabelText('Calculator display')).toHaveValue('4')
+  })
+
+  it('supports repeatable subtraction from the on-screen keypad', async () => {
+    mockedCalculate.mockResolvedValue(5)
+    const user = userEvent.setup()
+    render(<App />)
+
+    await user.click(screen.getByRole('button', { name: '9' }))
+    await user.click(screen.getByRole('button', { name: 'Subtraction' }))
+    await user.click(screen.getByRole('button', { name: '3' }))
+    await user.click(screen.getByRole('button', { name: 'Subtraction' }))
+    await user.click(screen.getByRole('button', { name: '1' }))
+    await user.click(screen.getByRole('button', { name: 'Calculate' }))
+
+    expect(mockedCalculate).toHaveBeenCalledWith('subtraction', [9, 3, 1])
+  })
+
   it('prevents submission when the expression ends with an operator', async () => {
     const user = userEvent.setup()
     render(<App />)
@@ -68,6 +96,7 @@ describe('calculator-style interaction', () => {
     expect(selectedOperation).toHaveAttribute('aria-pressed', 'true')
     expect(selectedOperation).not.toHaveClass('selected')
     expect(screen.getByRole('button', { name: 'Multiplication' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Subtraction' })).toBeDisabled()
     expect(screen.getByRole('button', { name: 'Division' })).toBeDisabled()
     expect(screen.getByRole('button', { name: 'Power' })).toBeDisabled()
     expect(screen.getByRole('button', { name: 'Square root' })).toBeDisabled()
@@ -114,6 +143,7 @@ describe('calculator-style interaction', () => {
     const keypadButtons = screen.getByRole('group', { name: 'Calculator keypad' }).querySelectorAll('button')
     expect(keypadButtons[0]).toHaveTextContent('AC')
     expect(keypadButtons[1]).toHaveAccessibleName('Backspace')
+    expect(keypadButtons[2]).toHaveAccessibleName('Subtraction')
     expect(screen.queryByRole('button', { name: 'Toggle positive or negative' })).not.toBeInTheDocument()
   })
 

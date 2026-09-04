@@ -1,19 +1,19 @@
 # Calculator frontend
 
-A responsive React + TypeScript calculator for the API in `../backend`. It provides one calculator display and an on-screen keypad for addition, multiplication, division, exponentiation, square root, and percentage.
+A responsive React + TypeScript calculator for the API in `../backend`. It provides one calculator display and an on-screen keypad for addition, subtraction, multiplication, division, exponentiation, square root, and percentage.
 
 ## Calculator interaction
 
 Enter numbers with the keyboard or number keys. Choose an operation using its keypad key, then enter the next value. The display identifies the active operation and value.
 
-- Addition, multiplication, and division accept two or more operands. Press the selected operation again to continue the chain, such as `1 + 2 + 3`. Only one operator is allowed in a chain, and division stays in the backend's left-to-right order.
+- Addition, subtraction, multiplication, and division accept two or more operands. Press the selected operation again to continue the chain, such as `10 - 4 - 2`. Only one operator is allowed in a chain, and ordered operations stay in the backend's left-to-right order.
 - Power collects exactly a base and exponent.
 - Square root collects one radicand.
 - Percentage collects a value followed by a percentage and displays the relationship as `percentage% of value`.
 
 Repeatable operation keys stay enabled so another operand can be added. Power and percentage become disabled after moving to their second value, and square root becomes disabled as soon as it is selected because it needs no additional operand. AC and backspace remain available whenever they can affect the current input.
 
-The keypad also provides decimal input, backspace, all-clear, and calculate. Keyboard shortcuts are `+`, `*`/`x`, `/`, `^`, `%`, and `r` for square root; Enter calculates and Escape clears. Other operation keys are disabled as soon as an operation is selected, so a chain cannot mix operators. Unsupported keyboard characters are ignored instead of being added to the display.
+The keypad also provides decimal input, backspace, all-clear, and calculate. Keyboard shortcuts are `+`, `-`, `*`/`x`, `/`, `^`, `%`, and `r` for square root; Enter calculates and Escape clears. A leading `-` starts a negative number, while `-` after a complete value selects or continues subtraction. Other operation keys are disabled as soon as an operation is selected, so a chain cannot mix operators. Unsupported keyboard characters are ignored instead of being added to the display.
 
 Calculation is disabled for missing, incomplete, or invalid numeric input. Number, operation, display, and calculate controls are disabled while a request is pending, preventing edits and duplicate requests. AC and backspace remain available whenever they can clear or delete something; using either invalidates the pending interaction so a late response cannot overwrite the display. Mathematical/domain validation—such as division by zero, negative square roots, and non-representable results—remains in the backend, and its error message is shown in the calculator display.
 

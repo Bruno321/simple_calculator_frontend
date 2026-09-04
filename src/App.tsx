@@ -177,6 +177,16 @@ function App() {
       return
     }
 
+    if (event.key === '-') {
+      if (result === null && currentEntry === '') return
+
+      event.preventDefault()
+      if (result !== null || parseNumber(currentEntry) !== null) {
+        chooseOperation('subtraction')
+      }
+      return
+    }
+
     const keyedOperation = operationKeys[event.key]
     if (keyedOperation) {
       event.preventDefault()
@@ -254,6 +264,7 @@ function App() {
           <div className="keypad" role="group" aria-label="Calculator keypad">
             <button className="key utility-key" type="button" disabled={!hasSomethingToClear} onClick={clearCalculator}>AC</button>
             <button className="key utility-key backspace-key" type="button" aria-label="Backspace" disabled={!hasSomethingToDelete} onClick={backspace}>&larr;</button>
+            <OperationKey operation="subtraction" selected={operation === 'subtraction'} disabled={operationIsDisabled('subtraction')} onChoose={chooseOperation} />
             <OperationKey operation="square-root" selected={operation === 'square-root'} disabled={operationIsDisabled('square-root')} onChoose={chooseOperation} />
 
             <NumberKey value="7" disabled={isLoading} onPress={appendCharacter} />

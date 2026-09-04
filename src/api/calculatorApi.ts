@@ -1,5 +1,6 @@
 export type Operation =
   | 'addition'
+  | 'subtraction'
   | 'multiplication'
   | 'division'
   | 'exponentiation'
@@ -15,6 +16,7 @@ const apiBaseUrl = configuredBaseUrl.replace(/\/$/, '')
 function payloadFor(operation: Operation, values: number[]): object {
   switch (operation) {
     case 'addition':
+    case 'subtraction':
     case 'multiplication':
     case 'division':
       return { operands: values }

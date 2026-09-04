@@ -10,6 +10,7 @@ type ContractCase = {
 
 const contractCases: ContractCase[] = [
   { operation: 'addition', values: [1, 2, 3], endpoint: 'addition', payload: { operands: [1, 2, 3] } },
+  { operation: 'subtraction', values: [10, 4, 2], endpoint: 'subtraction', payload: { operands: [10, 4, 2] } },
   { operation: 'multiplication', values: [2, 3, 4], endpoint: 'multiplication', payload: { operands: [2, 3, 4] } },
   { operation: 'division', values: [100, 5, 2], endpoint: 'division', payload: { operands: [100, 5, 2] } },
   { operation: 'exponentiation', values: [2, 3], endpoint: 'exponentiation', payload: { base: 2, exponent: 3 } },

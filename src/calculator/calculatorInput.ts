@@ -10,6 +10,7 @@ export type OperationDefinition = {
 
 export const operations: OperationDefinition[] = [
   { id: 'addition', label: 'Addition', symbol: '+', kind: 'repeatable', fields: ['First number', 'Next number'] },
+  { id: 'subtraction', label: 'Subtraction', symbol: '-', kind: 'repeatable', fields: ['First number', 'Next number'] },
   { id: 'multiplication', label: 'Multiplication', symbol: '\u00d7', kind: 'repeatable', fields: ['First number', 'Next number'] },
   { id: 'division', label: 'Division', symbol: '\u00f7', kind: 'repeatable', fields: ['Dividend', 'Divisor'] },
   { id: 'exponentiation', label: 'Power', symbol: 'x\u02b8', kind: 'pair', fields: ['Base', 'Exponent'] },

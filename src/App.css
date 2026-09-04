@@ -91,7 +91,7 @@
 .key:focus-visible { position: relative; z-index: 1; outline: 3px solid #dffb55; outline-offset: -4px; }
 .key:disabled { color: #606866; background: #202523; cursor: not-allowed; }
 .utility-key { color: #c0c9c5; background: #29302e; font-size: 0.93rem; }
-.backspace-key { grid-column: span 2; }
+.backspace-key { grid-column: span 1; }
 .operation-key { color: #dffb55; background: #28312d; }
 .zero-key { font-size: 1.35rem; }
 .equals-key { grid-column: 1 / -1; min-height: 66px; color: #172018; background: #dffb55; font-size: 1.6rem; }
