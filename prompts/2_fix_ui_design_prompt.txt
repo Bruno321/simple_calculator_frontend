@@ -1,0 +1,168 @@
+Inspect the current `frontend` implementation first, and keep using the existing `backend` as the source of truth for the API contract.
+
+Then refactor the frontend UI to behave much more like a real calculator.
+
+Do not change the backend unless absolutely necessary.
+
+## Remove the current hero / branding UI
+
+Remove all of the following from the page:
+- the "API powered" badge
+- the "Simple calculator" label
+- the heading "Choose an operation. We’ll do the math."
+- the text "Six focused operations, calculated by the API."
+
+Also remove the extra top UI element shown in the values section (the small summary-like control / chip on the right, e.g. the `... + ...` style element). I do not want that secondary header/control there.
+
+## Redesign the calculator interaction
+
+The current multi-input approach for addition, multiplication, and division is not what I want.
+
+For:
+- addition
+- multiplication
+- division
+
+do NOT use multiple separate operand inputs and do NOT use an "Add another operand" interaction.
+
+Instead, redesign those operations so they use a single calculator-style input / expression flow, similar to a normal calculator.
+
+Examples:
+- `1 + 1 + 1 + 1`
+- `2 × 3 × 4`
+- `100 ÷ 5 ÷ 2`
+
+The user should be able to:
+- type numbers from the keyboard
+- click calculator number buttons on screen
+- click the operation button on screen
+
+Once one of these operations is selected, the expression must remain constrained to that operation only.
+
+Examples:
+- addition can allow `1 + 1 + 1 + 1`
+- multiplication can allow `2 × 3 × 4`
+- division can allow `100 ÷ 5 ÷ 2`
+
+But it must NOT allow mixed expressions like:
+- `1 + 1 × 2`
+- `10 ÷ 2 + 3`
+
+because arbitrary expression parsing is outside the backend scope.
+
+Also handle incomplete expressions safely.
+
+For example:
+- `1 + 1 + 1 +`
+
+must be treated as incomplete and must not be submitted.
+
+Disable calculation or otherwise prevent submission until the expression is valid and complete.
+
+## Apply calculator-style input to the other operations too
+
+For all remaining operations:
+- exponentiation
+- square root
+- percentage
+
+also support both:
+- typing values directly
+- clicking number buttons on the calculator UI
+
+I want a calculator-like interaction, not a raw form-driven experience.
+
+However, still keep the interaction aligned with the backend contract:
+
+- Exponentiation must collect exactly:
+  - base
+  - exponent
+
+- Square root must collect exactly:
+  - one radicand
+
+- Percentage must collect exactly:
+  - value
+  - percentage
+
+You may guide the user through the required values with a calculator-like flow, but do not allow unsupported expression semantics.
+
+## UI direction
+
+Refactor the layout so it feels closer to a standard calculator.
+
+Use a visible calculator display area and an on-screen keypad.
+
+The keypad should at minimum support:
+- digits 0-9
+- decimal point
+- clear / reset
+- backspace / delete
+- calculate / submit
+- the six supported operations:
+  - addition
+  - multiplication
+  - division
+  - exponentiation
+  - square root
+  - percentage
+
+The UI should still remain clean and modern, but functionally it should feel like a calculator first.
+
+## Loading, validation, and error handling
+
+Keep the app intuitive.
+
+When a calculation request is in progress:
+- show a loading state
+- disable inputs and buttons that should not be used during the request
+- prevent duplicate submissions
+
+Perform client-side validation for:
+- incomplete expressions
+- invalid numeric entry
+- missing required values
+- invalid operation flow
+
+Do not duplicate backend business logic unnecessarily.
+
+Display backend errors clearly.
+
+## Architecture
+
+- Keep API communication separated from UI components.
+- Keep the frontend maintainable.
+- Reuse the existing backend contract instead of inventing new payload semantics.
+- Do not reimplement the backend math logic in the frontend.
+- If you need to introduce a parser or helper for the calculator input, keep it small and limited to the supported frontend interaction rules.
+
+## Responsive design
+
+Keep basic mobile support.
+
+The calculator must remain usable on mobile and desktop, with the keypad and display adapting cleanly to smaller screens.
+
+## Testing
+
+Update the frontend tests to reflect the new calculator-style interaction.
+
+Cover the important flows, including:
+- entering values by typing
+- entering values by clicking buttons
+- preventing incomplete expressions
+- sending the correct backend payload for each operation
+- loading / disabled state
+- displaying successful results
+- displaying backend errors
+
+## README and Docker
+
+Update the frontend README to reflect the new calculator-style UI and how it maps to the backend operations.
+
+Also preserve or update the Docker setup if needed so the frontend still builds and runs correctly as a containerized app.
+
+When finished, summarize:
+- what UI was removed
+- how the new calculator interaction works
+- how each operation maps to the backend
+- any assumptions you made

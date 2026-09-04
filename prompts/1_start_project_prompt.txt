@@ -1,0 +1,184 @@
+Inspect the existing `backend` project first and use it as the source of truth for the API contract.
+
+Then implement the React + TypeScript frontend inside `frontend`.
+
+Before writing code, inspect the backend routes, request models, response models, validations, and README so the frontend matches the API that already exists. Do not duplicate mathematical/business logic in the frontend.
+
+Build a simple calculator UI that supports all currently implemented backend operations:
+- addition
+- multiplication
+- division
+- exponentiation
+- square root
+- percentage
+
+Use the existing React + TypeScript + Vite setup.
+
+## Calculator interaction
+
+The UI should behave like an intuitive calculator rather than exposing raw API payload forms.
+
+For operations that accept multiple operands:
+- addition
+- multiplication
+- division
+
+once an operation is selected, subsequent operands must continue using that same operation.
+
+For example, addition may produce:
+
+1 + 1 + 1 + 1
+
+but it should not allow mixing operators into something like:
+
+1 + 1 * 2
+
+because arbitrary expression parsing is intentionally outside the backend scope.
+
+Allow the user to continue adding operands for these operations.
+
+Handle incomplete input states safely. For example:
+
+1 + 1 + 1 +
+
+must not be submitted because there is no operand after the final operator. Disable calculation or otherwise prevent submission until the expression is complete.
+
+For operations with fixed mathematical inputs, constrain the UI accordingly:
+
+- Square root requires one radicand. Once the user enters a value and chooses square root, no additional operand is required.
+- Exponentiation requires exactly a base and an exponent.
+- Percentage requires exactly a value and a percentage. After selecting percentage, only the additional percentage input required by the backend contract should be accepted.
+
+The frontend interaction should reflect the actual backend contracts rather than creating unsupported expression semantics.
+
+## Intuitive UI
+
+Provide an intuitive UI for entering inputs and displaying results.
+
+When a calculation request is in progress:
+- show a visible loading state
+- disable calculator buttons and inputs that could trigger or modify the current calculation
+- prevent duplicate requests
+- restore interaction after the request completes, whether it succeeds or fails
+
+Display the result clearly after a successful calculation.
+
+## Input validation and error handling
+
+Perform client-side validation for UI/input concerns such as:
+- required values
+- incomplete expressions
+- invalid numeric input
+- attempting to calculate before the required inputs are complete
+
+Do not duplicate backend mathematical validation unnecessarily.
+
+The backend remains responsible for mathematical/domain rules such as:
+- division by zero
+- invalid square roots
+- invalid exponentiation results
+- non-representable numeric results
+
+Display backend errors clearly to the user.
+
+## Architecture
+
+- Keep API communication separated from UI components.
+- Use the backend as the source of truth for endpoint paths, payloads, and response formats.
+- Do not modify the backend unless it is actually necessary.
+- If an integration issue requires a backend change, explain the issue before modifying it.
+- Keep state and components simple and focused.
+- Do not add a UI framework unless one is already installed.
+- Do not duplicate calculator/business logic that already belongs to the backend.
+
+## Responsive design
+
+Provide basic responsive support.
+
+The calculator must remain usable on:
+- desktop
+- tablet
+- mobile-sized screens
+
+Inputs and controls should resize/reflow appropriately without horizontal overflow or unusable controls.
+
+## Testing
+
+Add focused frontend tests for important user flows, including:
+- selecting operations
+- entering operands
+- preventing incomplete calculations
+- loading/disabled state during an API request
+- displaying a successful result
+- displaying backend errors
+
+Make sure:
+
+npm test
+
+and:
+
+npm run build
+
+pass.
+
+## Docker
+
+Review the existing frontend Docker setup and make sure the frontend can be built and served as a production container.
+
+Requirements:
+- use a multi-stage Dockerfile
+- use an official Node image for the build stage
+- install dependencies and build the Vite application inside the build stage
+- serve the generated production files from a lightweight web server such as Nginx
+- do not require Node or npm in the final runtime image
+- expose the frontend through port 80 inside the container
+
+The image should be buildable with:
+
+docker build -t calculator-frontend .
+
+The container should be runnable with:
+
+docker run --rm -p 3000:80 calculator-frontend
+
+The frontend should then be available at:
+
+http://localhost:3000
+
+Make sure the frontend can be configured to call the backend without hardcoding environment-specific URLs directly inside UI components.
+
+If environment configuration is needed for the backend API base URL, keep it centralized and document how it works.
+
+## README
+
+Update the frontend README so another developer can understand and run the project without inspecting the source code first.
+
+Document:
+- what the frontend does
+- the main architectural decisions
+- how the frontend uses the backend as the source of truth
+- the supported calculator operations
+- the interaction model for multi-operand operations
+- how incomplete expressions are handled
+- loading and error behavior
+- project structure
+- how to install dependencies
+- how to run locally
+- how to run tests
+- how to create a production build
+- how to build the Docker image
+- how to run the Docker container
+- how the frontend connects to the backend
+- any environment variables or configuration required for the backend API URL
+
+Keep the README concise and practical.
+
+Also review the existing Docker and README files instead of replacing good existing content unnecessarily.
+
+When finished, summarize:
+- the frontend structure
+- important UI decisions
+- how API integration was implemented
+- Docker setup
+- any assumptions made based on the backend

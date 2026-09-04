@@ -1,0 +1,30 @@
+Refine the current calculator interaction with these changes:
+
+- Instead of showing the message "Mixed operations are not supported. Clear the current expression to choose another operation.", disable all other operation buttons once an operation has been selected, similar to how the `=` button is disabled when the expression is incomplete.
+- `AC` and the delete/backspace button must always remain enabled when they have something to clear/delete, even when other calculator controls are disabled.
+- Fix keyboard input validation: unsupported characters/letters must never be inserted into the calculator display in the first place. Do not allow them and then validate them afterward.
+- Remove the `+/-` button completely.
+- Move the delete/backspace button into the keypad position previously occupied by `+/-`.
+- Keep both keyboard input and keypad-button input working consistently.
+- Preserve the existing backend-driven operation constraints and do not add mixed-operation support.
+
+
+When the user selects an operation after entering a value, for example:
+
+1 +
+
+the selected operation button should NOT stay highlighted in yellow like the `=` button.
+
+The current behavior of dimming the other unavailable operation buttons is correct and should remain.
+
+However, the currently selected operation button should keep its normal enabled/clickable appearance, including its usual click/hover glow or brightness, rather than looking like an active yellow state.
+
+In short:
+- other operation buttons: dimmed/disabled
+- selected operation button: normal enabled appearance
+- `=` button: keep its existing yellow/accent styling
+- do not use the yellow/accent selected state for operation buttons
+
+Update the relevant UI test if one exists for operation-button states.
+
+Update the relevant tests to cover these interaction rules.
